@@ -18,6 +18,75 @@ const Dashboard = () => {
   const [languageFilterValue, setLanguageFilterValue] = useState('all');
   const [insuranceFilterValue, setInsuranceFilterValue] = useState('all');
 
+  const mockPatients = [
+    {
+      id: 1,
+      address: '22821 137 ave',
+      age: '12',
+      description: 'Flu',
+      email: 'test@gmail.com',
+      insuranceProvider: 'centene',
+      language: 'Arabic',
+      name: 'Ryan Haraki',
+      sex: 'Male',
+    },
+    {
+      id: 2,
+      address: '22821 137 ave',
+      age: '12',
+      description: 'Flu',
+      email: 'test@gmail.com',
+      insuranceProvider: 'anthem',
+      language: 'French',
+      name: 'Ryafasdfasd',
+      sex: 'Male',
+    },
+    {
+      id: 3,
+      address: '22821 137 ave',
+      age: '12',
+      description: 'Flu',
+      email: 'test@gmail.com',
+      insuranceProvider: 'anthem',
+      language: 'Arabic',
+      name: 'Ryan Haraki',
+      sex: 'Male',
+    },
+    {
+      id: 4,
+      address: '22821 137 ave',
+      age: '12',
+      description: 'Flu',
+      email: 'test@gmail.com',
+      insuranceProvider: 'centene',
+      language: 'French',
+      name: 'Ryan Haraki',
+      sex: 'Male',
+    },
+    {
+      id: 5,
+      address: '22821 137 ave',
+      age: '12',
+      description: 'Flu',
+      email: 'test@gmail.com',
+      insuranceProvider: 'unitedhealth group',
+      language: 'Chinese',
+      name: 'sdgasdgasdg',
+      sex: 'Female',
+    },
+    {
+      id: 6,
+      address: '22821 137 ave',
+      age: '12',
+      description: 'Flu',
+      email: 'test@gmail.com',
+      insuranceProvider: 'unitedhealth group',
+      language: 'Arabic',
+      name: 'Ryan Haraki',
+      sex: 'Male',
+    },
+  ];
+
   useEffect(() => {
     if (user) {
       getUser(user.id).then((user) => {
@@ -63,7 +132,6 @@ const Dashboard = () => {
               variant='filled'
               placeholder='Sex'
               className='w-1/6'
-              value={sexFilterValue}
               onChange={handleSexFilterChange}
             >
               <option value='all'>All</option>
@@ -74,7 +142,6 @@ const Dashboard = () => {
               variant='filled'
               placeholder='Location'
               className='w-1/6'
-              value={locationFilterValue}
               onChange={handleLocationFilterChange}
             >
               <option value='all'>All</option>
@@ -86,7 +153,6 @@ const Dashboard = () => {
               variant='filled'
               placeholder='Languages'
               className='w-1/6'
-              value={languageFilterValue}
               onChange={handleLanguageFilterChange}
             >
               <option value='all'>All</option>
@@ -122,15 +188,20 @@ const Dashboard = () => {
 
         <div className='grid lg:grid-cols-3 gap-4 my-20'>
           {/* map through current patients */}
-          {currentUser?.patients?.map((patient) => (
+          {/* {currentUser?.patients?.map((patient) => ( */}
+          {mockPatients.map((patient) => (
             <>
               {/* code to filter by search bar */}
               {patient.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                sexFilterValue === patient.sex.toLowerCase() &&
-                locationFilterValue === patient.address.toLowerCase() &&
-                languageFilterValue === patient.language.toLowerCase() &&
-                insuranceFilterValue ===
-                  patient.insuranceProvider.toLowerCase() && (
+                (sexFilterValue === 'all' ||
+                  sexFilterValue === patient.sex.toLowerCase()) &&
+                (locationFilterValue === 'all' ||
+                  locationFilterValue === patient.address.toLowerCase()) &&
+                (languageFilterValue === 'all' ||
+                  languageFilterValue === patient.language.toLowerCase()) &&
+                (insuranceFilterValue === 'all' ||
+                  insuranceFilterValue ===
+                    patient.insuranceProvider.toLowerCase()) && (
                   <PatientCard patient={patient} />
                 )}
             </>
