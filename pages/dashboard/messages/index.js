@@ -34,7 +34,7 @@ const messages = () => {
           >
             New Message
           </Button>
-          {currentUser?.conversations.map((conversation) => (
+          {currentUser?.conversations?.map((conversation) => (
             <MessagePreview conversation={conversation} />
           ))}
         </div>

@@ -24,7 +24,6 @@ export default function Home() {
       </Head>
       <main className="p-12 h-screen flex justify-center items-center w-full ">
         <div className="flex items-center-justify-center text-center flex-col w-full md:w-1/2 space-y-4">
-          <UserButton />
           <h1 className="text-4xl font-bold">Medlink</h1>
           <p>Manage your patient relations via a convenient CRM.</p>
           <div className="flex space-x-3 items-center justify-center">

@@ -68,7 +68,7 @@ const Dashboard = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-4 my-20">
-          {currentUser?.patients.map((patient) => (
+          {currentUser?.patients?.map((patient) => (
             <>
               {patient.name
                 .toLowerCase()

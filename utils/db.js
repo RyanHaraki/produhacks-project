@@ -1,13 +1,15 @@
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
-const createNewUser = async (uid, email, name) => {
+const createNewUser = async (uid, email, name, calendarLink) => {
   await setDoc(doc(db, "users", uid), {
     uid: uid,
     email: email,
     name: name,
+    calendarLink: calendarLink,
     location: "",
-    calendarLink: "",
+    patients: [],
+    conversations: [],
   });
 };
 

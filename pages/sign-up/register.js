@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
 import { createNewUser } from "@/utils/db";
+import { Button, Input, createToastFn } from "@chakra-ui/react";
 
 const Register = () => {
   const { user, isLoading } = useUser();
+  const [calendarLink, setCalendarLink] = useState("");
   const router = useRouter();
 
   const isLoaded = !isLoading && user;
@@ -13,23 +15,30 @@ const Register = () => {
     createNewUser(
       user.id,
       user.primaryEmailAddress.emailAddress,
-      user.fullName
+      user.fullName,
+      calendarLink
     );
-    console.log("user created");
   };
 
-  useEffect(() => {
-    if (user) {
-      // User is not signed in
-      // User is signed in
-      createUser();
-      router.push("/sign-up/organization");
-    } else {
-      console.log("NO USER");
-    }
-  }, [user, isLoaded]);
+  const handleSignup = () => {
+    createUser();
+    router.push("/sign-up/organization");
+  };
 
-  return <div>Register</div>;
+  return (
+    <div className="flex h-screen w-full justify-center items-center">
+      <div className="flex flex-col space-y-3">
+        <p className="text-2xl font-bold">Enter your Booking Link</p>
+        <Input
+          placeholder="https://calendly.com/practice/15minutes"
+          onChange={(e) => setCalendarLink(e.target.value)}
+        />
+        <Button colorScheme="blue" onClick={handleSignup}>
+          Submit
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default Register;

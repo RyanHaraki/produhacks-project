@@ -40,7 +40,7 @@ const mockAppointments = [
 
 const Appointments = () => {
   const [meetingMinutes, setMeetingMinutes] = React.useState(
-    localStorage.getItem("meetingMinutes")
+    typeof window !== "undefined" && localStorage.getItem("meetingMinutes")
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
