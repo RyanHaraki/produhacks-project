@@ -118,7 +118,7 @@ const Appointments = () => {
                         </p>
 
                         <Button onClick={onOpen} className="mt-2 text-sm">
-                          View Meeting Minutes
+                          Physician Notes
                         </Button>
                       </div>
                     </div>

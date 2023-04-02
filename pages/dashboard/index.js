@@ -13,6 +13,24 @@ const Dashboard = () => {
   const { user, isLoading } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [sexFilterValue, setSexFilterValue] = useState("all");
+  const [locationFilterValue, setLocationFilterValue] = useState("all");
+  const [languageFilterValue, setLanguageFilterValue] = useState("all");
+  const [insuranceFilterValue, setInsuranceFilterValue] = useState("all");
+
+  const handleSexFilterChange = (event) => {
+    setSexFilterValue(event.target.value);
+  };
+  const handleLocationFilterChange = (event) => {
+    setLocationFilterValue(event.target.value);
+  };
+  const handleLanguageFilterChange = (event) => {
+    setLanguageFilterValue(event.target.value);
+  };
+  const handleInsuranceFilterChange = (event) => {
+    setInsuranceFilterValue(event.target.value);
+  };
+
   useEffect(() => {
     if (user) {
       getUser(user.id).then((user) => {
@@ -41,17 +59,51 @@ const Dashboard = () => {
             <div className="w-2/5">
               <p>Filter By</p>
             </div>
-            <Select variant="filled" placeholder="Sex" className="w-1/6">
-              <option value="option1">Option 1</option>
+            <Select
+              variant="filled"
+              placeholder="Sex"
+              className="w-1/6"
+              onChange={handleSexFilterChange}
+            >
+              <option value="all">All</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
             </Select>
-            <Select variant="filled" placeholder="Location" className="w-1/6">
-              <option value="option1">Option 1</option>
+
+            <Select
+              variant="filled"
+              placeholder="Location"
+              className="w-1/6"
+              onChange={handleLocationFilterChange}
+            >
+              <option value="all">All</option>
+              <option value="vancouver">Vancouver</option>
+              <option value="burnaby">Burnaby</option>
+              <option value="richmond">Richmond</option>
             </Select>
-            <Select variant="filled" placeholder="Languages" className="w-1/6">
-              <option value="option1">Option 1</option>
+            <Select
+              variant="filled"
+              placeholder="Languages"
+              className="w-1/6"
+              onChange={handleLanguageFilterChange}
+            >
+              <option value="all">All</option>
+              <option value="english">English</option>
+              <option value="french">French</option>
+              <option value="chinese">Chinese</option>
+              <option value="arabic">Arabic</option>
             </Select>
-            <Select variant="filled" placeholder="Insurances" className="w-1/6">
-              <option value="option1">Option 1</option>
+            <Select
+              variant="filled"
+              placeholder="Insurances"
+              className="w-1/6"
+              value={insuranceFilterValue}
+              onChange={handleInsuranceFilterChange}
+            >
+              <option value="all">All</option>
+              <option value="United Health Group">UnitedHealth Group</option>
+              <option value="Anthem">Anthem</option>
+              <option value="Centene">Centene</option>
             </Select>
           </HStack>
           {router.pathname === "/messages" && <Messages />}
@@ -70,11 +122,21 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-3 gap-4 my-20">
           {currentUser?.patients?.map((patient) => (
             <>
-              {patient.name
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()) && (
-                <PatientCard patient={patient} />
-              )}
+              {/* code to filter by search bar */}
+              {patient.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                (sexFilterValue.toLowerCase() === "all" ||
+                  sexFilterValue.toLowerCase() === patient.sex.toLowerCase()) &&
+                (locationFilterValue.toLowerCase() === "all" ||
+                  locationFilterValue.toLowerCase() ===
+                    patient.address.toLowerCase()) &&
+                (languageFilterValue.toLowerCase() === "all" ||
+                  languageFilterValue.toLowerCase() ===
+                    patient.language.toLowerCase()) &&
+                (insuranceFilterValue.toLowerCase() === "all" ||
+                  insuranceFilterValue.toLowerCase() ===
+                    patient.insuranceProvider.toLowerCase()) && (
+                  <PatientCard patient={patient} />
+                )}
             </>
           ))}
         </div>

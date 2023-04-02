@@ -22,7 +22,8 @@ const options = [
     name: "Messages",
     url: "/dashboard/messages",
     icon: HiChatBubbleOvalLeft 
-  }
+  },
+  
 ]
 
 
@@ -38,22 +39,22 @@ const SideNav = () => {
   <div className="top-0 sticky flex flex-col w-64 border-r border-solid border-gray-300 h-screen p-3 justify-between">
     <div>
     <div className="flex items-center hover:bg-gray-100 rounded-md transition-all cursor-pointer p-2">
-      <>
+      <div onClick={() => router.push('/dashboard/organization')} className="flex items-center">
         {organization?.logo ? (
-         <>
+         <div >
          <img
               src={organization?.logoUrl}
               alt="Organization Logo"
               className="h-8 w-8 rounded-md mr-2"
             /> 
-         </>
+         </div>
           ) : (
             <div className="h-8 w-8 rounded-md mr-2 bg-gray-300 flex items-center justify-center">
               <p>{organization?.name.substring(0, 1)}</p>
             </div>
           )}
           <h1 className="font-semibold">{organization?.name}</h1>
-        </>       
+        </div>       
       </div>
       <div className="h-8"></div>
        <div className="flex flex-col space-y-2 mt-4">

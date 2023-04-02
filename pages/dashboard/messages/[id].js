@@ -90,7 +90,7 @@ const MessageInterface = () => {
     <Layout>
       <div className="flex h-screen w-full p-12">
         <div className="w-full h-full rounded-md border border-gray-300 border-solid flex flex-col">
-          <div className="bg-gray-50 border-b border-gray-300 border-solid flex items-center justify-between p-3 ">
+          <div className="bg-gray-50 rounded-t-md border-b border-gray-300 border-solid flex items-center justify-between p-3 ">
             <h2 className="text-lg font-bold">{conversation?.patientName}</h2>
             <p className="text-sm text-gray-600">
               {conversation?.patientEmail}

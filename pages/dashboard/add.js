@@ -6,6 +6,7 @@ import {
   FormLabel,
   IconButton,
   Input,
+  Select,
   Stack,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
@@ -103,11 +104,20 @@ const AddPatient = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Sex</FormLabel>
-                <Input
-                  onChange={(e) => setSex(e.target.value)}
-                  placeholder="Male"
-                />
+
+                <Select
+                  placeholder="Select Sex"
+                  onChange={(e) => {
+                    setSex(e.target.value);
+                    console.log(sex);
+                  }}
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </Select>
               </FormControl>
+
               <FormControl>
                 <FormLabel>Address</FormLabel>
                 <Input
@@ -117,17 +127,32 @@ const AddPatient = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Language</FormLabel>
-                <Input
-                  onChange={(e) => setLanguage(e.target.value)}
-                  placeholder="Arabic"
-                />
+                <Select
+                  placeholder="Select Language"
+                  onChange={(e) => {
+                    setSex(e.target.value);
+                  }}
+                >
+                  <option value="English">English</option>
+                  <option value="Arabic">Arabic</option>
+                  <option value="French">French</option>
+                  <option value="Chinese">Chinese</option>
+                </Select>
               </FormControl>
               <FormControl>
                 <FormLabel>Insurance Provider</FormLabel>
-                <Input
-                  onChange={(e) => setInsuranceProvider(e.target.value)}
-                  placeholder="Liberty Mutual"
-                />
+                <Select
+                  placeholder="Select Provider"
+                  onChange={(e) => {
+                    setSex(e.target.value);
+                  }}
+                >
+                  <option value="United Health Group">
+                    UnitedHealth Group
+                  </option>
+                  <option value="Anthem">Anthem</option>
+                  <option value="Entene">Centene</option>
+                </Select>
               </FormControl>
               <div className="h-4"></div>
               <Button onClick={addPatient} colorScheme="gray">
