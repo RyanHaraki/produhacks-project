@@ -22,7 +22,6 @@ const Register = () => {
     if (user) {
       // User is not signed in
       // User is signed in
-      console.log("uesr singed");
       createUser();
       router.push("/sign-up/organization");
     } else {

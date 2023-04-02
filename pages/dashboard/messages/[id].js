@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
-import { IconButton, Input } from "@chakra-ui/react";
+import { Button, IconButton, Input } from "@chakra-ui/react";
 import { HiChatBubbleOvalLeftEllipsis } from "react-icons/hi2";
 import { useUser } from "@clerk/nextjs";
 import { updateUser, getUser } from "@/utils/db";
@@ -13,6 +13,7 @@ const MessageInterface = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [conversation, setConversation] = useState(null);
   const { user, isLoading } = useUser();
+  const bottomRef = useRef(null);
 
   useEffect(() => {
     if (user) {
@@ -23,40 +24,64 @@ const MessageInterface = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // 👇️ scroll to bottom every time messages change
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [conversation?.messages]);
+
+  const sendCalendar = async (e) => {
+    e.preventDefault();
+    const newMessage = {
+      sender: "Doctor",
+      content: currentUser.calendarLink,
+    };
+
+    const newConversation = {
+      ...conversation,
+      messages: [...conversation.messages, newMessage],
+    };
+
+    const newConversations = currentUser.conversations.map((c) =>
+      c.id === id ? newConversation : c
+    );
+
+    const updatedUser = {
+      ...currentUser,
+      conversations: newConversations,
+    };
+
+    await updateUser(user.id, updatedUser);
+    setCurrentUser(updatedUser);
+    setConversation(newConversation);
+
+    setMessage("");
+  };
+
   const sendMessage = async (e) => {
     e.preventDefault();
+    if (message === "") return;
+    const newMessage = {
+      sender: "Doctor",
+      content: message,
+    };
 
-    await updateUser(currentUser.uid, {
-      conversations: currentUser.conversations.map((c) => {
-        if (c.id === id) {
-          setConversation({
-            ...c,
-            lastMessage: message,
-            messages: [
-              ...c.messages,
-              {
-                sender: "Doctor",
-                content: message,
-              },
-            ],
-          });
+    const newConversation = {
+      ...conversation,
+      messages: [...conversation.messages, newMessage],
+    };
 
-          return {
-            ...c,
-            lastMessage: message,
-            messages: [
-              ...c.messages,
-              {
-                sender: "Doctor",
-                content: message,
-              },
-            ],
-          };
-        } else {
-          return c;
-        }
-      }),
-    });
+    const newConversations = currentUser.conversations.map((c) =>
+      c.id === id ? newConversation : c
+    );
+
+    const updatedUser = {
+      ...currentUser,
+      conversations: newConversations,
+    };
+
+    await updateUser(user.id, updatedUser);
+    setCurrentUser(updatedUser);
+    setConversation(newConversation);
 
     setMessage("");
   };
@@ -71,7 +96,7 @@ const MessageInterface = () => {
               {conversation?.patientEmail}
             </p>
           </div>
-          <div className="w-full h-full">
+          <div className="w-full h-full py-2 overflow-y-scroll">
             {/* CHAT UI */}
             {conversation?.messages.map((m) => (
               <div
@@ -81,8 +106,19 @@ const MessageInterface = () => {
               >
                 <div className="flex flex-col items-start justify-start">
                   <p className="text-sm text-gray-600">{m.sender}</p>
-                  <p className="text-sm">{m.content}</p>
+                  {m.content.includes("https://") ? (
+                    <a
+                      href={m.content}
+                      target="_blank"
+                      className="text-sm text-blue-600"
+                    >
+                      {m.content}
+                    </a>
+                  ) : (
+                    <p className="text-sm text-gray-600">{m.content}</p>
+                  )}
                 </div>
+                <div ref={bottomRef}></div>
               </div>
             ))}
           </div>
@@ -90,6 +126,7 @@ const MessageInterface = () => {
             onSubmit={(e) => sendMessage(e)}
             className=" border-t border-gray-300 border-solid flex items-start justify-between p-3 space-x-2"
           >
+            <Button onClick={sendCalendar}>Send Calendar</Button>
             <Input
               placeholder="Message..."
               onChange={(e) => setMessage(e.target.value)}

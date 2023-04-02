@@ -14,7 +14,7 @@ const options = [
     icon: HiHome
   },
   {
-    name: "Past Appointments",
+    name: "Appointments",
     url: "/dashboard/appointments",
     icon: HiUserGroup
   },
